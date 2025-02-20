@@ -1,0 +1,46 @@
+# Node Information
+data-path="/data/besu"
+genesis-file="/etc/besu/genesis.json"
+logging="{{ blackfort_besu_log_level }}"
+node-private-key-file="/keys/nodekey"
+
+min-gas-price={{ blackfort_besu_min_gas }}
+tx-pool-min-gas-price={{ blackfort_besu_tx_pool_min_gas_price }}
+
+# P2P network
+p2p-enabled={{ blackfort_besu_p2p_enabled }}
+discovery-enabled={{ blackfort_besu_discovery_enabled }}
+static-nodes-file="{{ blackfort_besu_static_nodes_file }}"
+p2p-host="{{ blackfort_besu_p2p_host }}"
+p2p-port={{ blackfort_besu_p2p_port }}
+max-peers={{ blackfort_besu_max_peers }}
+
+host-allowlist=[{{ blackfort_besu_host_allowlist | map('to_json') | join(',') }}]
+
+# JSON-RPC
+rpc-http-enabled={{ blackfort_besu_rpc_http_enabled }}
+rpc-http-host="{{ blackfort_besu_rpc_http_host }}"
+rpc-http-port={{ blackfort_besu_rpc_http_port }}
+rpc-http-api=[{{ blackfort_besu_rpc_http_api | map('to_json') | join(',') }}]
+rpc-http-cors-origins=[{{ blackfort_besu_rpc_http_cors_origins | map('to_json') | join(',') }}]
+rpc-http-authentication-enabled={{ blackfort_besu_rpc_http_authentication_enabled }}
+rpc-http-authentication-jwt-public-key-file="{{ blackfort_besu_rpc_http_authentication_jwt_public_key_file }}"
+rpc-http-max-active-connections={{ blackfort_besu_rpc_http_max_active_connections }}
+revert-reason-enabled={{ blackfort_besu_revert_reason_enabled }}
+
+# WebSockets API
+rpc-ws-enabled={{ blackfort_besu_rpc_ws_enabled }}
+rpc-ws-host="{{ blackfort_besu_rpc_ws_host }}"
+rpc-ws-port={{ blackfort_besu_rpc_ws_port }}
+rpc-ws-api=[{{ blackfort_besu_rpc_ws_api | map('to_json') | join(',') }}]
+rpc-ws-authentication-enabled={{ blackfort_besu_rpc_ws_authentication_enabled }}
+
+# Metrics
+metrics-enabled={{ blackfort_besu_metrics_enabled }}
+metrics-host="{{ blackfort_besu_metrics_host }}"
+metrics-port={{ blackfort_besu_metrics_port }}
+
+{% if blackfort_besu_xdns_enabled|bool == True %}
+Xdns-enabled=true
+Xdns-update-enabled=true
+{% endif %}

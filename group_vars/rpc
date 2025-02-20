@@ -1,0 +1,3 @@
+---
+blackfort_besu_rpc_http_api: ["DEBUG", "ETH", "WEB3", "IBFT", "NET", "TRACE", "EEA", "PRIV", "QBFT", "PERM", "TXPOOL"]
+blackfort_besu_rpc_http_authentication_enabled: "false"

@@ -1,0 +1,53 @@
+services:
+  nginx:
+    image: nginx:1.26
+    container_name: nginx_proxy
+    ports:
+      - "8088:80"
+    command: >
+      /bin/sh -c "echo '
+      worker_processes 2;
+      events {
+          worker_connections 2048;
+      }
+
+      http {
+          access_log /dev/stdout;
+          error_log /dev/stdout error;
+          server {
+              listen 80;
+
+              location / {
+                  rewrite ^/(.*) / break;
+                  proxy_pass http://{{ blackfort_besu_node }}:{{ blackfort_besu_rpc_http_port }};
+                  proxy_set_header Host $$host;
+                  proxy_set_header X-Real-IP $$remote_addr;
+                  proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $$scheme;
+              }
+          }
+      }' > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 50m
+        max-file: "3"
+  "{{ blackfort_besu_node }}":
+    image: "{{ blackfort_besu_image }}:{{ blackfort_besu_version }}"
+    command: [ "--config-file=/etc/besu/config.toml",
+               "--identity={{ blackfort_besu_node }}" ]
+    volumes:
+      - "{{ blackfort_besu_data_dir }}:/data/besu"
+      - "{{ blackfort_besu_config_dir }}:/etc/besu:ro"
+      - "{{ blackfort_besu_keys_dir }}:/keys:ro"
+    ports:
+      - "{{ blackfort_besu_rpc_http_port }}:{{ blackfort_besu_rpc_http_port }}"
+      - "{{ blackfort_besu_p2p_port }}:{{ blackfort_besu_p2p_port }}/tcp"
+      - "{{ blackfort_besu_p2p_port }}:{{ blackfort_besu_p2p_port }}/udp"
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 1g
+        max-file: "5"

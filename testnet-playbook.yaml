@@ -1,0 +1,25 @@
+---
+- name: Install besu
+  hosts: all
+  user: root
+  vars_files:
+    - "key_validators-testnet.yml"
+  vars:
+    blackfort_besu_network: testnet
+    blackfort_besu_hostname: "blackfort.network"
+    fail2ban_bantime: 86400
+    fail2ban_findtime: 28800
+    fail2ban_maxretry: 3
+
+  tasks:
+    - name: Install docker
+      ansible.builtin.include_role:
+        name: geerlingguy.docker
+      when: install_docker|default(false)|bool == true
+    - name: Install fail2ban
+      ansible.builtin.include_role:
+        name: buluma.fail2ban
+      when: install_fail2ban|default(false)|bool == true
+    - name: Install blackfort besu
+      ansible.builtin.include_role:
+        name: blackfort_besu

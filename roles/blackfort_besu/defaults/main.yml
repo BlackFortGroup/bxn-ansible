@@ -1,0 +1,45 @@
+---
+blackfort_besu_network: testnet
+blackfort_besu_hostname: ""
+
+blackfort_besu_version: 25.2.0
+blackfort_besu_image: "hyperledger/besu"
+blackfort_besu_keygen_image: "consensys/quorum-k8s-hooks:qgt-0.2.20"
+
+blackfort_besu_base_dir: "/opt/besu"
+blackfort_besu_config_dir: "{{ blackfort_besu_base_dir }}/config"
+blackfort_besu_data_dir: "{{ blackfort_besu_base_dir }}/data"
+blackfort_besu_keys_dir: "{{ blackfort_besu_base_dir }}/keys"
+
+blackfort_besu_log_level: "INFO"
+
+blackfort_besu_p2p_enabled: "true"
+blackfort_besu_discovery_enabled: "true"
+blackfort_besu_static_nodes_file: "/etc/besu/static-nodes.json"
+blackfort_besu_p2p_host: "0.0.0.0"
+blackfort_besu_p2p_port: "30303"
+blackfort_besu_max_peers: 25
+blackfort_besu_min_gas: 1000000000000
+blackfort_besu_tx_pool_min_gas_price: 1000000000000
+blackfort_besu_host_allowlist: ["*"]
+blackfort_besu_rpc_http_enabled: "true"
+blackfort_besu_rpc_http_host: "0.0.0.0"
+blackfort_besu_rpc_http_port: 8545
+blackfort_besu_rpc_http_api: ["DEBUG", "ETH", "ADMIN", "WEB3", "IBFT", "NET", "TRACE", "EEA", "PRIV", "QBFT", "PERM", "TXPOOL"]
+blackfort_besu_rpc_http_cors_origins: ["all"]
+blackfort_besu_rpc_http_authentication_enabled: "false"
+blackfort_besu_rpc_http_authentication_jwt_public_key_file: "/keys/publicKey.pem"
+blackfort_besu_rpc_http_max_active_connections: 80
+blackfort_besu_revert_reason_enabled: "true"
+blackfort_besu_rpc_ws_enabled: "false"
+blackfort_besu_rpc_ws_host: "0.0.0.0"
+blackfort_besu_rpc_ws_port: 8546
+blackfort_besu_rpc_ws_api: ["DEBUG", "ETH", "ADMIN", "WEB3", "IBFT", "NET", "TRACE", "EEA", "PRIV", "QBFT", "PERM", "TXPOOL"]
+blackfort_besu_rpc_ws_authentication_enabled: "false"
+blackfort_besu_metrics_enabled: "true"
+blackfort_besu_metrics_host: "0.0.0.0"
+blackfort_besu_metrics_port: 9545
+
+blackfort_besu_xdns_enabled: "true"
+
+blackfort_besu_blocks_import: "false"
