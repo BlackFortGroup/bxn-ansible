@@ -209,8 +209,8 @@
     group: root
     mode: '0644'
 
-# - name: Start Nodes
-#   community.docker.docker_compose_v2:
-#     project_src: "{{ blackfort_besu_base_dir }}"
-#     files:
-#       - docker-compose.yml
+- name: Start Nodes
+  community.docker.docker_compose_v2:
+    project_src: "{{ blackfort_besu_base_dir }}"
+    files:
+      - docker-compose.yml

@@ -1,0 +1,5 @@
+.idea
+delete.yaml
+inventory.ini
+playbook.yaml
+.ansible/
