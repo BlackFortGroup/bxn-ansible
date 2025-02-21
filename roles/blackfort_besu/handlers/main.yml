@@ -1,5 +1,6 @@
 ---
 - name: Restart Docker Compose
+  throttle: 2
   community.docker.docker_compose_v2:
     project_src: "{{ blackfort_besu_base_dir }}"
     state: present

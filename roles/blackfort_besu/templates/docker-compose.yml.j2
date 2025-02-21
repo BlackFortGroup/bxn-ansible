@@ -45,6 +45,7 @@ services:
       - "{{ blackfort_besu_rpc_http_port }}:{{ blackfort_besu_rpc_http_port }}"
       - "{{ blackfort_besu_p2p_port }}:{{ blackfort_besu_p2p_port }}/tcp"
       - "{{ blackfort_besu_p2p_port }}:{{ blackfort_besu_p2p_port }}/udp"
+      - "{{ blackfort_besu_metrics_port }}:{{ blackfort_besu_metrics_port }}"
     restart: always
     logging:
       driver: "json-file"
