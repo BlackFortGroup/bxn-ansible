@@ -9,11 +9,14 @@ tx-pool-min-gas-price={{ blackfort_besu_tx_pool_min_gas_price }}
 
 # P2P network
 p2p-enabled={{ blackfort_besu_p2p_enabled }}
+{% if blackfort_besu_p2p_host != "" %}
+p2p-host="{{ blackfort_besu_p2p_host }}"
+{% endif %}
 discovery-enabled={{ blackfort_besu_discovery_enabled }}
 static-nodes-file="{{ blackfort_besu_static_nodes_file }}"
-p2p-host="{{ blackfort_besu_p2p_host }}"
 p2p-port={{ blackfort_besu_p2p_port }}
 max-peers={{ blackfort_besu_max_peers }}
+nat-method="{{ blackfort_besu_nat_method }}"
 
 host-allowlist=[{{ blackfort_besu_host_allowlist | map('to_json') | join(',') }}]
 

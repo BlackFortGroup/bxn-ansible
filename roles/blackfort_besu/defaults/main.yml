@@ -16,8 +16,9 @@ blackfort_besu_log_level: "INFO"
 blackfort_besu_p2p_enabled: "true"
 blackfort_besu_discovery_enabled: "true"
 blackfort_besu_static_nodes_file: "/etc/besu/static-nodes.json"
-blackfort_besu_p2p_host: "0.0.0.0"
+blackfort_besu_p2p_host: ""
 blackfort_besu_p2p_port: "30303"
+blackfort_besu_nat_method: "DOCKER"
 blackfort_besu_max_peers: 25
 blackfort_besu_min_gas: 1000000000000
 blackfort_besu_tx_pool_min_gas_price: 1000000000000
