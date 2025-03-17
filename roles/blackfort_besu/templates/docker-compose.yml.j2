@@ -47,6 +47,10 @@ services:
       - "{{ blackfort_besu_p2p_port }}:{{ blackfort_besu_p2p_port }}/udp"
       - "{{ blackfort_besu_metrics_port }}:{{ blackfort_besu_metrics_port }}"
     restart: always
+{% if blackfort_besu_besu_opts %}
+    environment:
+      - {{ blackfort_besu_besu_opts }}
+{% endif %}
     logging:
       driver: "json-file"
       options:
