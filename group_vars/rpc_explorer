@@ -1,0 +1,5 @@
+---
+blackfort_besu_rpc_http_api: ["DEBUG", "ETH", "WEB3", "IBFT", "NET", "TRACE", "EEA", "PRIV", "QBFT", "PERM", "TXPOOL"]
+blackfort_besu_rpc_http_authentication_enabled: "false"
+blackfort_besu_besu_opts: "BESU_OPTS=-Xms8g -Xmx16g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=45 -XX:NewRatio=2 -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.hprof -Dio.netty.leakDetectionLevel=paranoid"
+blackfort_besu_log_level: "ERROR"
