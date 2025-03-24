@@ -243,7 +243,7 @@ These variables can also be combined:
 ansible-playbook -i testnet-inventory.ini testnet-playbook.yaml -e "install_fail2ban=true install_docker=true blackfort_besu_blocks_import=true"
 ```
 
-****### Variables
+### Variables
 
 | Variable                                                     | Description                                   | Default Value                                                                                        |
 |--------------------------------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------------------------------|
@@ -288,11 +288,11 @@ ansible-playbook -i testnet-inventory.ini testnet-playbook.yaml -e "install_fail
 | `blackfort_besu_bonsai_historical_block_limit`               | Bonsai historical block limit.                | 512                                                                                                  |
 | `blackfort_besu_besu_opts`                                   | Additional Besu options.                      | `""`                                                                                                 |
 | `blackfort_besu_sync_mode`                                   | Synchronization mode.                         | `FAST`                                                                                               |
-| `blackfort_besu_data_storage_format`                         | Data storage format.                          | `BONSAI`                                                                                             |****
+| `blackfort_besu_data_storage_format`                         | Data storage format.                          | `BONSAI`                                                                                             |
 
 ## Running a Besu Node in an Existing Network using Docker Compose
 
-To successfully run a Hyperledger Besu node in an existing network using Docker Compose, follow the steps outlined below.
+To successfully run a Hyperledger Besu node in an existing network using Docker Compose v2, follow the steps outlined below.
 
 ## Prerequisites
 
@@ -320,7 +320,7 @@ cd bxn-ansible
 - **For Mainnet**:
 
 ```bash
-HOSTNAME=$HOSTNAME docker-compose -f docker-compose-mainnet.yml up -d
+HOSTNAME=$HOSTNAME docker compose -f docker-compose-mainnet.yml up -d
 ```
 
 - **For Testnet**:
@@ -328,7 +328,7 @@ HOSTNAME=$HOSTNAME docker-compose -f docker-compose-mainnet.yml up -d
 The process for starting a node on the testnet is analogous to the mainnet.
 
 ```bash
-HOSTNAME=$HOSTNAME docker-compose -f docker-compose-testnet.yml up -d
+HOSTNAME=$HOSTNAME docker compose -f docker-compose-testnet.yml up -d
 ```
 
 ## Docker Compose Configuration (`docker-compose-mainnet.yml`)
@@ -410,9 +410,9 @@ data-storage-format="BONSAI"
 
 - `rpc-http-api`: APIs exposed over HTTP RPC. The available API options are: ADMIN, CLIQUE, DEBUG, EEA, ETH, IBFT, MINER, NET, PERM, PLUGINS, PRIV, QBFT, TRACE, TXPOOL, and WEB3.
 
-- `sync-mode`: Synchronization mode (options: 'FULL', 'FAST', 'SNAP')
+- `sync-mode`: Synchronization mode, possible values are FULL
 
-- `data-storage-format`: Data storage format (options: 'ROCKSDB', 'BONSAI')
+- `data-storage-format`: Data storage format (options: 'FOREST', 'BONSAI')
 
 ## Accessing the JSON-RPC API
 

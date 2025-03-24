@@ -1,7 +1,7 @@
 services:
   bxn-node-mainnet:
     container_name: bxn-node-mainnet
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.2.2
     restart: always
     ports:
       - "8545:8545"

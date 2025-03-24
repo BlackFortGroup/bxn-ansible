@@ -1,7 +1,7 @@
 services:
   bxn-node-testnet:
     container_name: bxn-node-testnet
-    image: hyperledger/besu:latest
+    image: hyperledger/besu:25.2.2
     restart: always
     ports:
       - "8545:8545"

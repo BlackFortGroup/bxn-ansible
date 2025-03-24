@@ -47,5 +47,5 @@ blackfort_besu_blocks_import: "false"
 blackfort_besu_bonsai_historical_block_limit: 512
 blackfort_besu_besu_opts: ""
 
-blackfort_besu_sync_mode: "FAST"
+blackfort_besu_sync_mode: "FULL"
 blackfort_besu_data_storage_format: "BONSAI"

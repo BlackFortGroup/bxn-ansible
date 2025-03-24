@@ -5,5 +5,5 @@ rpc-http-enabled=true
 Xdns-enabled=true
 Xdns-update-enabled=true
 nat-method="DOCKER"
-sync-mode="FAST"
+sync-mode="FULL"
 data-storage-format="BONSAI"
