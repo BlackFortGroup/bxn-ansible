@@ -1,0 +1,9 @@
+data-path="/opt/besu/database"
+genesis-file="/etc/besu/genesis.json"
+static-nodes-file="/etc/besu/static-nodes.json"
+rpc-http-enabled=true
+Xdns-enabled=true
+Xdns-update-enabled=true
+nat-method="DOCKER"
+sync-mode="FAST"
+data-storage-format="BONSAI"

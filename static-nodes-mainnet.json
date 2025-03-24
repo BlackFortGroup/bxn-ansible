@@ -1,0 +1,15 @@
+[
+  "enode://38af822f59bc0daf4e05518ea11483078db9e22844e1210894f7ea556bfd083fceb9a887fcd33b21c82c571316ecf994c6215b74bda787288ee67695baf3f558@besu-node-validator-1.mainnet.blackfort.network:30303?discport=0",
+  "enode://2400a7b9afb3a64af3881670db5acebd869f3e04666196f86f522060b460637bff7054588b2b23da19cb1f3859eb029ce5283bc626d8c2733ad8a69c86610a9d@besu-node-validator-2.mainnet.blackfort.network:30303?discport=0",
+  "enode://aedceced2664fab355e5a8ac810c320941bcadd031800c3f5371a8ac1229cbc14b293083063b06174b611d9374bcd5f23940b8a6221e8cec2c829a85badbde97@besu-node-validator-3.mainnet.blackfort.network:30303?discport=0",
+  "enode://4a385c7c6d129bbecaa4353baba01bc925864cff1432ab503a0d6adabb1760e9e8be9118a90f956e2b1529d23365e643250189777790ff7ccef5e483d5d59b50@besu-node-validator-4.mainnet.blackfort.network:30303?discport=0",
+  "enode://fdc15a1b1d4a9020db7d5458ce82c0f8721a049cc8b3db5faecc7a1c1d5d2b962bef4dd39ad9a684ea912954f9ed8b2a38ac81f65e82fe851a979b26183c66a5@besu-node-validator-5.mainnet.blackfort.network:30303?discport=0",
+  "enode://b1c26a3bbaf869cab2dfeff26b42a25f88ffe0ef1a73bc814842b136ddee4a5d56143a268cf17968e9b815473e7d741e3e65a354d3622ba071fd0809307d8b7f@besu-node-validator-6.mainnet.blackfort.network:30303?discport=0",
+  "enode://1658a232cabac8e6289a68810226a93cafd5b89f23a0a0bdf90b09331008d998191dca4f1f801e5c822ad1b5a1d0e57920823e8b7d0998238037ac54339b59c8@besu-node-bootnode-1.mainnet.blackfort.network:30303?discport=0",
+  "enode://88126c1de67af7aa6fbed48a7c9e59667fe2c71dabc238fe7ef5aa982e16643944452e9ba173aedc529f3feeed29864ac9563dd604ec905f635b239a8a7af1df@besu-node-bootnode-2.mainnet.blackfort.network:30303?discport=0",
+  "enode://52c86bda0c801bd51cf51e3bce22c891a6bace79cc162c97093af0fae3a10ed314453b098cd24ed0a70075dbf3f9f32cbfdaf393ae8542b2524888f9f3ca3c33@besu-node-member-1.mainnet.blackfort.network:30303?discport=0",
+  "enode://30a6e0598f91673242d91b9d78e1a8daa9dab10144ba3bf7e0eeb318e5b633c841c8a3a35d43c9ddd0af2ea4170009105684bb7bbcaf7b4ef63a65f69cdee8fa@besu-node-member-2.mainnet.blackfort.network:30303?discport=0",
+  "enode://0e0342fa3bb3f4e98ce22aa4e640fe3d92d4d8e508cea41ecb98b9211765db17e253e8db8d54f8ab0e761db8180db24829d6cbc470b05326c46f32a854e6db6f@besu-node-rpc-1.mainnet.blackfort.network:30303?discport=0",
+  "enode://1c2165308fa9d7854af5ce500679c543db6aab955ff2afbc7d837b701d2784ed2039f2f22e918d7f12df82ea39da92cdcd0fe9be642be54d3c1946d71e119880@besu-node-rpc-2.mainnet.blackfort.network:30303?discport=0",
+  "enode://6dfae89998a01f7071cff95a0661e48c28f95130b995949a7798ac8ff69a8ecb7c604a491d58edc1cd70ab390bfb09aad038b964d9d02080c59b3748244d95b0@besu-node-rpc-explorer-1.mainnet.blackfort.network:30303?discport=0"
+]

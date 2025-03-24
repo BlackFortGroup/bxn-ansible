@@ -1,0 +1,19 @@
+services:
+  bxn-node-mainnet:
+    container_name: bxn-node-mainnet
+    image: hyperledger/besu:latest
+    restart: always
+    ports:
+      - "8545:8545"
+      - "30303:30303/tcp"
+      - "30303:30303/udp"
+    command: [ "--config-file=/etc/besu/config.toml",
+               "--identity=${HOSTNAME}" ]
+    volumes:
+      - ./roles/blackfort_besu/files/genesis-mainnet.json:/etc/besu/genesis.json:ro
+      - ./static-nodes-mainnet.json:/etc/besu/static-nodes.json:ro
+      - ./config.toml:/etc/besu/config.toml:ro
+      - bxn-node-mainnet-data:/opt/besu/database
+
+volumes:
+  bxn-node-mainnet-data:

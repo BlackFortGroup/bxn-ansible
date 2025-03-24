@@ -1,0 +1,19 @@
+services:
+  bxn-node-testnet:
+    container_name: bxn-node-testnet
+    image: hyperledger/besu:latest
+    restart: always
+    ports:
+      - "8545:8545"
+      - "30303:30303/tcp"
+      - "30303:30303/udp"
+    command: [ "--config-file=/etc/besu/config.toml",
+               "--identity=${HOSTNAME}" ]
+    volumes:
+      - ./roles/blackfort_besu/files/genesis-testnet.json:/etc/besu/genesis.json:ro
+      - ./static-nodes-testnet.json:/etc/besu/static-nodes.json:ro
+      - ./config.toml:/etc/besu/config.toml:ro
+      - bxn-node-testnet-data:/opt/besu/database
+
+volumes:
+  bxn-node-testnet-data:

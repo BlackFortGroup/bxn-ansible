@@ -1,0 +1,10 @@
+[
+  "enode://b35dc6c2c075bf75cdc05c1e40940ee3a48f074ee8b3a8dd8903c30eb99377d112d380f46b7ab4620f3e33f2caf506fb8b48a1a8725508934c6f9a6634704c19@besu-node-validator-1.testnet.blackfort.network:30303?discport=0",
+  "enode://accd12693bfb86d3e605b5918af4ad0de9e8c98c28ee266998d90bb71c437c3673a0235035574b330bd860568c85463f04fa2b8a8422ba3d4fe6f7266861bf92@besu-node-validator-2.testnet.blackfort.network:30303?discport=0",
+  "enode://a282c49718c3dadc4a6fbc945973f005c0c366dfe8b79aca8366fd856c4565c10ef0c3cb0e4ef6b6aa7031ff8943d087a2f24d2846704e3c23981bc546b19651@besu-node-validator-3.testnet.blackfort.network:30303?discport=0",
+  "enode://a6d49f73097449a6e9597cd385a338eb55213798da4f56589c27fa757598b28bdd7bb988e56fbccf4aa101daf30577642b59293f14cfc64891d666319670e3a8@besu-node-validator-4.testnet.blackfort.network:30303?discport=0",
+  "enode://c8698c5651b0f3689747bbeee042013c6fc539def3c83edcece1dddc9e01ad3eb95387aa05a75eece1fd9faf8fcd7aeb3d4a46cf4942ba86d7968ababa5bd9d6@besu-node-validator-5.testnet.blackfort.network:30303?discport=0",
+  "enode://759c12bd774b0a57340d12925ee70ec23443ab26e00904dbc42bd64b423e6a27bc0f061fe6cf0ce65ccacdf4c716c7788cbb78f5a2d9a08ae465d9079e2afa06@besu-node-bootnode-1.testnet.blackfort.network:30303?discport=0",
+  "enode://12f36118c5ceb282c6735ad0b5cdf5c131e527a5ac5c99d114137e5b655ad0f475ab8410bedbb0899972d9efb1b9cde32adf741fe284ac1f2c34cccd1d8540f2@besu-node-member-1.testnet.blackfort.network:30303?discport=0",
+  "enode://a7b6e905bb1886b439d1ba77c2f4f4ce627c78e088caa260cf720ef7c50eb6720aaa5e08efaa52c3ef6db3ba23ce4e4b8b2efd4d878cfcb6c9f78a1bc0cbc6d2@besu-node-rpc-1.testnet.blackfort.network:30303?discport=0"
+]
