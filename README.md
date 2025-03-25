@@ -1,42 +1,42 @@
 # Table of Contents
 
 1. [General Information](#general-information)
-   - 1.1. [Chain IDs](#chain-ids)
-   - 1.2. [Main API URLs](#main-api-urls)
+   1. [Chain IDs](#chain-ids)
+   2. [Main API URLs](#main-api-urls)
 
 2. [Playbooks](#playbooks)
-   - 2.1. [Mainnet Playbook](#mainnet-playbook)
-   - 2.2. [Testnet Playbook](#testnet-playbook)
+   1. [Mainnet Playbook](#mainnet-playbook)
+   2. [Testnet Playbook](#testnet-playbook)
 
 3. [Inventory Files](#inventory-files)
-   - 3.1. [Inventory Groups](#inventory-groups)
+   1. [Inventory Groups](#inventory-groups)
 
 4. [Ansible Roles](#ansible-roles)
-   - 4.1. [geerlingguy.docker](#geerlingguydocker)
-   - 4.2. [buluma.fail2ban](#bulumafail2ban)
-   - 4.3. [blackfort_besu](#blackfort_besu)
+   1. [geerlingguy.docker](#geerlingguydocker)
+   2. [buluma.fail2ban](#bulumafail2ban)
+   3. [blackfort_besu](#blackfort_besu)
 
 5. [Role: `blackfort_besu`](#role-blackfort_besu)
-   - 5.1. [Responsibilities](#responsibilities)
-   - 5.2. [Required Files](#required-files)
-   - 5.3. [Validator and Node Keys](#validator-and-node-keys)
+   1. [Responsibilities](#responsibilities)
+   2. [Required Files](#required-files)
+   3. [Validator and Node Keys](#validator-and-node-keys)
 
 6. [Deployment Instructions](#deployment-instructions)
-   - 6.1. [Prerequisites](#prerequisites)
-   - 6.2. [Running the Playbook](#running-the-playbook)
-   - 6.3. [Additional Options](#additional-options)
+   1. [Prerequisites](#prerequisites)
+   2. [Running the Playbook](#running-the-playbook)
+   3. [Additional Options](#additional-options)
 
 7. [Variables](#variables)
 
 8. [Running a Besu Node in an Existing Network using Docker Compose](#running-a-besu-node-in-an-existing-network-using-docker-compose)
-   - 8.1. [Prerequisites](#prerequisites-1)
-   - 8.2. [Clone the Repository](#clone-the-repository)
-   - 8.3. [Start the Node](#start-the-node)
-   - 8.4. [Docker Compose Configuration](#docker-compose-configuration)
-   - 8.5. [Configuration File (`config.toml`)](#configuration-file-configtoml)
-   - 8.6. [Accessing the JSON-RPC API](#accessing-the-json-rpc-api)
-   - 8.7. [Verifying the Node](#verifying-the-node)
-   - 8.8. [Stopping the Node](#stopping-the-node)
+   1. [Prerequisites](#prerequisites-1)
+   2. [Clone the Repository](#clone-the-repository)
+   3. [Start the Node](#start-the-node)
+   4. [Docker Compose Configuration](#docker-compose-configuration)
+   5. [Configuration File (`config.toml`)](#configuration-file-configtoml)
+   6. [Accessing the JSON-RPC API](#accessing-the-json-rpc-api)
+   7. [Verifying the Node](#verifying-the-node)
+   8. [Stopping the Node](#stopping-the-node)
 
 # Besu Blockchain Deployment with Ansible
 
@@ -312,7 +312,7 @@ Begin by cloning the repository containing the necessary configuration files:
 
 ```bash
 git clone https://github.com/BlackFortGroup/bxn-ansible
-cd bxn-ansible
+cd bxn-ansible/docker
 ```
 
 ## Start the Node
@@ -348,7 +348,7 @@ services:
     command: [ "--config-file=/etc/besu/config.toml",
                "--identity=${HOSTNAME}" ]
     volumes:
-      - ./roles/blackfort_besu/files/genesis-mainnet.json:/etc/besu/genesis.json:ro
+      - ../roles/blackfort_besu/files/genesis-mainnet.json:/etc/besu/genesis.json:ro
       - ./static-nodes-mainnet.json:/etc/besu/static-nodes.json:ro
       - ./config.toml:/etc/besu/config.toml:ro
       - bxn-node-mainnet-data:/opt/besu/database
@@ -367,7 +367,7 @@ volumes:
 
 - **Volumes**:
   
-  - `./roles/blackfort_besu/files/genesis-mainnet.json:/etc/besu/genesis.json:ro`: Mounts the genesis file into the container in read-only mode, defining the initial state of the blockchain.
+  - `../roles/blackfort_besu/files/genesis-mainnet.json:/etc/besu/genesis.json:ro`: Mounts the genesis file into the container in read-only mode, defining the initial state of the blockchain.
   
   - `./static-nodes-mainnet.json:/etc/besu/static-nodes.json:ro`: Mounts the static nodes file in read-only mode, specifying peers for the node to connect with.
   
@@ -453,7 +453,7 @@ docker ps
 To view logs for debugging:
 
 ```bash
-docker logs -f bxn-node-mainnet
+docker compose -f docker-compose-mainnet.yml logs -f
 ```
 
 ## Stopping the Node
@@ -461,5 +461,5 @@ docker logs -f bxn-node-mainnet
 To stop the node, execute:
 
 ```bash
-docker-compose -f docker-compose-mainnet.yml down
+docker compose -f docker-compose-mainnet.yml down
 ```
