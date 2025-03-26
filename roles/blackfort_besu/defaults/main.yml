@@ -32,6 +32,7 @@ blackfort_besu_rpc_http_authentication_enabled: "false"
 blackfort_besu_rpc_http_authentication_jwt_public_key_file: "/keys/publicKey.pem"
 blackfort_besu_rpc_http_max_active_connections: 150
 blackfort_besu_revert_reason_enabled: "true"
+blackfort_besu_api_methods_no_auth: []
 blackfort_besu_rpc_ws_enabled: "false"
 blackfort_besu_rpc_ws_host: "0.0.0.0"
 blackfort_besu_rpc_ws_port: 8546
@@ -47,5 +48,5 @@ blackfort_besu_blocks_import: "false"
 blackfort_besu_bonsai_historical_block_limit: 512
 blackfort_besu_besu_opts: ""
 
-blackfort_besu_sync_mode: "FAST"
+blackfort_besu_sync_mode: "FULL"
 blackfort_besu_data_storage_format: "BONSAI"

@@ -7,6 +7,7 @@
   vars:
     blackfort_besu_network: mainnet
     blackfort_besu_hostname: "blackfort.network"
+    blackfort_besu_add_new_node: "false"
     fail2ban_bantime: 86400
     fail2ban_findtime: 28800
     fail2ban_maxretry: 3

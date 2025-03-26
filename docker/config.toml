@@ -1,9 +1,16 @@
 data-path="/opt/besu/database"
 genesis-file="/etc/besu/genesis.json"
 static-nodes-file="/etc/besu/static-nodes.json"
+discovery-enabled=true
+p2p-port=30303
+max-peers=25
 rpc-http-enabled=true
 Xdns-enabled=true
 Xdns-update-enabled=true
 nat-method="DOCKER"
 sync-mode="FULL"
 data-storage-format="BONSAI"
+logging="INFO"
+min-gas-price=1000000000000
+tx-pool-min-gas-price=1000000000000
+bonsai-historical-block-limit=512

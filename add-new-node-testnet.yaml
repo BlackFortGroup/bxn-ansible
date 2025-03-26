@@ -1,13 +1,10 @@
 ---
-- name: Install besu
-  hosts: all
+- name: Add new node
+  hosts: new_nodes
   user: root
-  vars_files:
-    - "key_validators-testnet.yml"
   vars:
     blackfort_besu_network: testnet
-    blackfort_besu_hostname: "blackfort.network"
-    blackfort_besu_add_new_node: "false"
+    blackfort_besu_add_new_node: "true"
     fail2ban_bantime: 86400
     fail2ban_findtime: 28800
     fail2ban_maxretry: 3

@@ -1,4 +1,14 @@
 ---
+- name: Check OS type
+  ansible.builtin.command: cat /etc/os-release
+  register: os_release
+  changed_when: false
+
+- name: Warn if OS is not Ubuntu
+  ansible.builtin.debug:
+    msg: "Warning: This role is tested only on Ubuntu. Your OS may not be fully supported."
+  when: "'ubuntu' not in os_release.stdout | lower"
+
 - name: Hostname set
   ansible.builtin.hostname:
     name: "{{ blackfort_besu_node }}"
@@ -43,8 +53,8 @@
     owner: root
     group: root
     mode: '0644'
-    decrypt: true
-  when: blackfort_besu_rpc_http_authentication_enabled == "true"
+  when:
+    - blackfort_besu_rpc_http_authentication_enabled == "true"
   notify: Restart Docker Compose
 
 - name: Copy blocks
@@ -73,7 +83,9 @@
 - name: Find matching validator keys
   ansible.builtin.set_fact:
     validator_keypair: "{{ key_validators | selectattr('name', 'equalto', inventory_hostname) | first }}"
-  when: inventory_hostname in groups["validators"]
+  when:
+    - inventory_hostname in groups["validators"]
+    - blackfort_besu_add_new_node == "false"
 
 - name: Deploy nodekey
   ansible.builtin.copy:
@@ -83,6 +95,7 @@
   when:
     - inventory_hostname in groups["validators"]
     - validator_keypair.nodekey is defined
+    - blackfort_besu_add_new_node == "false"
 
 - name: Deploy nodekey.pub
   ansible.builtin.copy:
@@ -92,6 +105,7 @@
   when:
     - inventory_hostname in groups["validators"]
     - validator_keypair.nodekey_pub is defined
+    - blackfort_besu_add_new_node == "false"
 
 - name: Ensure nodekey and nodekey.pub exist, generate if missing
   block:
@@ -138,6 +152,7 @@
   ansible.builtin.slurp:
     src: "{{ blackfort_besu_keys_dir }}/nodekey.pub"
   register: nodekey_pub
+  when: blackfort_besu_add_new_node == "false"
 
 - name: Set enode_uri based on blackfort_besu_hostname
   ansible.builtin.set_fact:
@@ -150,11 +165,13 @@
           else ansible_host
         ) + ':' + (blackfort_besu_p2p_port | string) + '?discport=0'
       }}
+  when: blackfort_besu_add_new_node == "false"
 
 - name: Gather enode URIs from all nodes
   ansible.builtin.set_fact:
     enode_uris_collected: "{{ hostvars | dict2items | selectattr('key', 'in', ansible_play_hosts) | map(attribute='value.enode_uri') | list }}"
   run_once: true
+  when: blackfort_besu_add_new_node == "false"
 
 - name: Ensure static-nodes.json exists or load from template
   block:
@@ -184,11 +201,13 @@
         static_nodes: "{{ static_nodes_content.content | b64decode | from_json }}"
       run_once: true
       when: static_nodes_json.stat.exists
+  when: blackfort_besu_add_new_node == "false"
 
 - name: Add missing enodes to static-nodes.json
   ansible.builtin.set_fact:
     updated_static_nodes: "{{ (static_nodes + enode_uris_collected) | unique }}"
   run_once: true
+  when: blackfort_besu_add_new_node == "false"
 
 - name: Save updated static-nodes.json to all servers
   ansible.builtin.copy:
@@ -199,11 +218,23 @@
   loop: "{{ ansible_play_hosts }}"
   run_once: true
   notify: Restart Docker Compose
+  when: blackfort_besu_add_new_node == "false"
+
+- name: Copy static-nodes.json to new server
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/docker/static-nodes-{{ blackfort_besu_network }}.json"
+    dest: "{{ blackfort_besu_config_dir }}/static-nodes.json"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Docker Compose
+  when: blackfort_besu_add_new_node == "true"
 
 - name: Show final static-nodes.json content
   ansible.builtin.debug:
     var: updated_static_nodes
   run_once: true
+  when: blackfort_besu_add_new_node == "false"
 
 - name: Copy Docker Compose file
   ansible.builtin.template:

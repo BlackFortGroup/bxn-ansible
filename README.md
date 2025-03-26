@@ -1,54 +1,32 @@
-# Table of Contents
-
 1. [General Information](#general-information)
-   1. [Chain IDs](#chain-ids)
-   2. [Main API URLs](#main-api-urls)
 
 2. [Playbooks](#playbooks)
-   1. [Mainnet Playbook](#mainnet-playbook)
-   2. [Testnet Playbook](#testnet-playbook)
 
 3. [Inventory Files](#inventory-files)
-   1. [Inventory Groups](#inventory-groups)
 
 4. [Ansible Roles](#ansible-roles)
-   1. [geerlingguy.docker](#geerlingguydocker)
-   2. [buluma.fail2ban](#bulumafail2ban)
-   3. [blackfort_besu](#blackfort_besu)
 
 5. [Role: `blackfort_besu`](#role-blackfort_besu)
-   1. [Responsibilities](#responsibilities)
-   2. [Required Files](#required-files)
-   3. [Validator and Node Keys](#validator-and-node-keys)
 
 6. [Deployment Instructions](#deployment-instructions)
-   1. [Prerequisites](#prerequisites)
-   2. [Running the Playbook](#running-the-playbook)
-   3. [Additional Options](#additional-options)
 
 7. [Variables](#variables)
 
-8. [Running a Besu Node in an Existing Network using Docker Compose](#running-a-besu-node-in-an-existing-network-using-docker-compose)
-   1. [Prerequisites](#prerequisites-1)
-   2. [Clone the Repository](#clone-the-repository)
-   3. [Start the Node](#start-the-node)
-   4. [Docker Compose Configuration](#docker-compose-configuration)
-   5. [Configuration File (`config.toml`)](#configuration-file-configtoml)
-   6. [Accessing the JSON-RPC API](#accessing-the-json-rpc-api)
-   7. [Verifying the Node](#verifying-the-node)
-   8. [Stopping the Node](#stopping-the-node)
+8. [Running a Besu Node in an Existing Network using Ansible. Recommended](#running-a-besu-node-in-an-existing-network-using-ansible-recommended)
+
+9. [Running a Besu Node in an Existing Network using Docker Compose](#running-a-besu-node-in-an-existing-network-using-docker-compose)
 
 # Besu Blockchain Deployment with Ansible
 
 This repository contains Ansible playbooks for deploying and managing a Hyperledger Besu blockchain network. The setup supports both `testnet` and `mainnet` environments.
 
-### General information
+## General information
 
 Chain ID `testnet` **4888**
 
 Chain ID `mainnet` **488**
 
-#### Main API URLs
+### Main API URLs
 
 https://rpc.blackfort.network/mainnet/rpc - node reader `mainnet`
 
@@ -243,58 +221,108 @@ These variables can also be combined:
 ansible-playbook -i testnet-inventory.ini testnet-playbook.yaml -e "install_fail2ban=true install_docker=true blackfort_besu_blocks_import=true"
 ```
 
-### Variables
+## Variables
 
-| Variable                                                     | Description                                   | Default Value                                                                                        |
-|--------------------------------------------------------------|-----------------------------------------------|------------------------------------------------------------------------------------------------------|
-| `blackfort_besu_network`                                     | Network type (`testnet` or `mainnet`).        | `testnet`                                                                                            |
-| `blackfort_besu_hostname`                                    | Optional hostname override.                   | `""`                                                                                                 |
-| `blackfort_besu_version`                                     | Besu version.                                 | `25.2.0`                                                                                             |
-| `blackfort_besu_image`                                       | Docker image for Besu.                        | `hyperledger/besu`                                                                                   |
-| `blackfort_besu_keygen_image`                                | Image used for key generation.                | `consensys/quorum-k8s-hooks:qgt-0.2.20`                                                              |
-| `blackfort_besu_base_dir`                                    | Base directory for Besu data.                 | `/opt/besu`                                                                                          |
-| `blackfort_besu_config_dir`                                  | Configuration directory.                      | `/opt/besu/config`                                                                                   |
-| `blackfort_besu_data_dir`                                    | Data directory.                               | `/opt/besu/data`                                                                                     |
-| `blackfort_besu_keys_dir`                                    | Keys directory.                               | `/opt/besu/keys`                                                                                     |
-| `blackfort_besu_log_level`                                   | Logging level.                                | `INFO`                                                                                               |
-| `blackfort_besu_p2p_enabled`                                 | Enable P2P networking.                        | `true`                                                                                               |
-| `blackfort_besu_discovery_enabled`                           | Enable P2P discovery.                         | `true`                                                                                               |
-| `blackfort_besu_static_nodes_file`                           | Path to `static-nodes.json`.                  | `/etc/besu/static-nodes.json`                                                                        |
-| `blackfort_besu_p2p_host`                                    | Host for P2P interface.                       | `0.0.0.0`                                                                                            |
-| `blackfort_besu_p2p_port`                                    | P2P port.                                     | `30303`                                                                                              |
-| `blackfort_besu_max_peers`                                   | Max number of peers.                          | `25`                                                                                                 |
-| `blackfort_besu_min_gas`                                     | Minimum gas price.                            | `1000000000000`                                                                                      |
-| `blackfort_besu_tx_pool_min_gas_price`                       | Transaction pool minimum gas price.           | `1000000000000`                                                                                      |
-| `blackfort_besu_host_allowlist`                              | Allowed hosts for HTTP RPC.                   | `["*"]`                                                                                              |
-| `blackfort_besu_rpc_http_enabled`                            | Enable HTTP RPC.                              | `true`                                                                                               |
-| `blackfort_besu_rpc_http_host`                               | Host for HTTP RPC.                            | `0.0.0.0`                                                                                            |
-| `blackfort_besu_rpc_http_port`                               | HTTP RPC port.                                | `8545`                                                                                               |
-| `blackfort_besu_rpc_http_api`                                | Enabled APIs for HTTP RPC.                    | `["DEBUG", "ETH", "ADMIN", "WEB3", "IBFT", "NET", "TRACE", "EEA", "PRIV", "QBFT", "PERM", "TXPOOL"]` |
-| `blackfort_besu_rpc_http_cors_origins`                       | CORS origins for HTTP RPC.                    | `["all"]`                                                                                            |
-| `blackfort_besu_rpc_http_authentication_enabled`             | Enable JWT authentication for HTTP RPC.       | `false`                                                                                              |
-| `blackfort_besu_rpc_http_authentication_jwt_public_key_file` | JWT public key file for HTTP RPC.             | `/keys/publicKey.pem`                                                                                |
-| `blackfort_besu_rpc_http_max_active_connections`             | Max active HTTP RPC connections.              | `80`                                                                                                 |
-| `blackfort_besu_revert_reason_enabled`                       | Enable revert reason output.                  | `true`                                                                                               |
-| `blackfort_besu_rpc_ws_enabled`                              | Enable WebSocket RPC.                         | `false`                                                                                              |
-| `blackfort_besu_rpc_ws_host`                                 | Host for WebSocket RPC.                       | `0.0.0.0`                                                                                            |
-| `blackfort_besu_rpc_ws_port`                                 | WebSocket RPC port.                           | `8546`                                                                                               |
-| `blackfort_besu_rpc_ws_api`                                  | Enabled APIs for WebSocket RPC.               | Same as HTTP RPC                                                                                     |
-| `blackfort_besu_rpc_ws_authentication_enabled`               | Enable JWT authentication for WebSocket RPC.  | `false`                                                                                              |
-| `blackfort_besu_metrics_enabled`                             | Enable Prometheus metrics.                    | `true`                                                                                               |
-| `blackfort_besu_metrics_host`                                | Host for metrics.                             | `0.0.0.0`                                                                                            |
-| `blackfort_besu_metrics_port`                                | Metrics port.                                 | `9545`                                                                                               |
-| `blackfort_besu_xdns_enabled`                                | Enable experimental DNS features.             | `true`                                                                                               |
-| `blackfort_besu_blocks_import`                               | Enable importing blockchain state from file.  | `false`                                                                                              |
-| `blackfort_besu_bonsai_historical_block_limit`               | Bonsai historical block limit.                | 512                                                                                                  |
-| `blackfort_besu_besu_opts`                                   | Additional Besu options.                      | `""`                                                                                                 |
-| `blackfort_besu_sync_mode`                                   | Synchronization mode.                         | `FAST`                                                                                               |
-| `blackfort_besu_data_storage_format`                         | Data storage format.                          | `BONSAI`                                                                                             |
+| Variable                                                     | Description                                  | Default Value                                                                                        |
+| ------------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `blackfort_besu_network`                                     | Network type (`testnet` or `mainnet`).       | `testnet`                                                                                            |
+| `blackfort_besu_hostname`                                    | Optional hostname override.                  | `""`                                                                                                 |
+| `blackfort_besu_version`                                     | Besu version.                                | `25.2.0`                                                                                             |
+| `blackfort_besu_image`                                       | Docker image for Besu.                       | `hyperledger/besu`                                                                                   |
+| `blackfort_besu_keygen_image`                                | Image used for key generation.               | `consensys/quorum-k8s-hooks:qgt-0.2.20`                                                              |
+| `blackfort_besu_base_dir`                                    | Base directory for Besu data.                | `/opt/besu`                                                                                          |
+| `blackfort_besu_config_dir`                                  | Configuration directory.                     | `/opt/besu/config`                                                                                   |
+| `blackfort_besu_data_dir`                                    | Data directory.                              | `/opt/besu/data`                                                                                     |
+| `blackfort_besu_keys_dir`                                    | Keys directory.                              | `/opt/besu/keys`                                                                                     |
+| `blackfort_besu_log_level`                                   | Logging level.                               | `INFO`                                                                                               |
+| `blackfort_besu_p2p_enabled`                                 | Enable P2P networking.                       | `true`                                                                                               |
+| `blackfort_besu_discovery_enabled`                           | Enable P2P discovery.                        | `true`                                                                                               |
+| `blackfort_besu_static_nodes_file`                           | Path to `static-nodes.json`.                 | `/etc/besu/static-nodes.json`                                                                        |
+| `blackfort_besu_p2p_host`                                    | Host for P2P interface.                      | `0.0.0.0`                                                                                            |
+| `blackfort_besu_p2p_port`                                    | P2P port.                                    | `30303`                                                                                              |
+| `blackfort_besu_max_peers`                                   | Max number of peers.                         | `25`                                                                                                 |
+| `blackfort_besu_min_gas`                                     | Minimum gas price.                           | `1000000000000`                                                                                      |
+| `blackfort_besu_tx_pool_min_gas_price`                       | Transaction pool minimum gas price.          | `1000000000000`                                                                                      |
+| `blackfort_besu_host_allowlist`                              | Allowed hosts for HTTP RPC.                  | `["*"]`                                                                                              |
+| `blackfort_besu_rpc_http_enabled`                            | Enable HTTP RPC.                             | `true`                                                                                               |
+| `blackfort_besu_rpc_http_host`                               | Host for HTTP RPC.                           | `0.0.0.0`                                                                                            |
+| `blackfort_besu_rpc_http_port`                               | HTTP RPC port.                               | `8545`                                                                                               |
+| `blackfort_besu_rpc_http_api`                                | Enabled APIs for HTTP RPC.                   | `["DEBUG", "ETH", "ADMIN", "WEB3", "IBFT", "NET", "TRACE", "EEA", "PRIV", "QBFT", "PERM", "TXPOOL"]` |
+| `blackfort_besu_rpc_http_cors_origins`                       | CORS origins for HTTP RPC.                   | `["all"]`                                                                                            |
+| `blackfort_besu_rpc_http_authentication_enabled`             | Enable JWT authentication for HTTP RPC.      | `false`                                                                                              |
+| `blackfort_besu_rpc_http_authentication_jwt_public_key_file` | JWT public key file for HTTP RPC.            | `/keys/publicKey.pem`                                                                                |
+| `blackfort_besu_rpc_http_max_active_connections`             | Max active HTTP RPC connections.             | `80`                                                                                                 |
+| `blackfort_besu_revert_reason_enabled`                       | Enable revert reason output.                 | `true`                                                                                               |
+| `blackfort_besu_rpc_ws_enabled`                              | Enable WebSocket RPC.                        | `false`                                                                                              |
+| `blackfort_besu_rpc_ws_host`                                 | Host for WebSocket RPC.                      | `0.0.0.0`                                                                                            |
+| `blackfort_besu_rpc_ws_port`                                 | WebSocket RPC port.                          | `8546`                                                                                               |
+| `blackfort_besu_rpc_ws_api`                                  | Enabled APIs for WebSocket RPC.              | Same as HTTP RPC                                                                                     |
+| `blackfort_besu_rpc_ws_authentication_enabled`               | Enable JWT authentication for WebSocket RPC. | `false`                                                                                              |
+| `blackfort_besu_metrics_enabled`                             | Enable Prometheus metrics.                   | `true`                                                                                               |
+| `blackfort_besu_metrics_host`                                | Host for metrics.                            | `0.0.0.0`                                                                                            |
+| `blackfort_besu_metrics_port`                                | Metrics port.                                | `9545`                                                                                               |
+| `blackfort_besu_xdns_enabled`                                | Enable experimental DNS features.            | `true`                                                                                               |
+| `blackfort_besu_blocks_import`                               | Enable importing blockchain state from file. | `false`                                                                                              |
+| `blackfort_besu_bonsai_historical_block_limit`               | Bonsai historical block limit.               | 512                                                                                                  |
+| `blackfort_besu_besu_opts`                                   | Additional Besu options.                     | `""`                                                                                                 |
+| `blackfort_besu_sync_mode`                                   | Synchronization mode.                        | `FAST`                                                                                               |
+| `blackfort_besu_data_storage_format`                         | Data storage format.                         | `BONSAI`                                                                                             |
+
+## Running a Besu Node in an Existing Network using Ansible. Recommended
+
+This guide explains how to deploy a Hyperledger Besu node into an existing network using Ansible.
+
+### Prerequisites
+
+Before proceeding, ensure you have the following:
+
+1. Ansible installed on your control machine. If not installed, follow the [official Ansible installation guide](https://docs.ansible.com/ansible/latest/installation_guide/index.html).
+2. SSH access to the target machine where Besu will run.
+3. Proper network connectivity between your control machine and the target node.
+4. Installation has been tested on Ubuntu 24.04.
+
+### Clone the Repository
+
+Begin by cloning the repository containing the necessary configuration files:
+
+```bash
+git clone https://github.com/BlackFortGroup/bxn-ansible
+```
+
+### Deployment
+
+#### Inventory File Setup
+
+Create or edit the `new-nodes-inventory.ini` file to include your new node(s) in the `new_nodes` group:
+
+```ini
+[new_nodes]
+pp-node-1 ansible_host=203.0.113.19
+```
+
+Replace 203.0.113.19 with the actual IP address of your new node.
+
+#### For Testnet
+
+To add a new node to the test network, run:
+
+```bash
+ansible-playbook -i new-nodes-inventory.ini add-new-node-testnet.yaml -e "install_docker=true"
+```
+
+#### For Mainnet
+
+To add a new node to the main network, run:
+
+```bash
+ansible-playbook -i new-nodes-inventory.ini add-new-node-mainnet.yaml -e "install_docker=true"
+```
 
 ## Running a Besu Node in an Existing Network using Docker Compose
 
 To successfully run a Hyperledger Besu node in an existing network using Docker Compose v2, follow the steps outlined below.
 
-## Prerequisites
+### Prerequisites
 
 Ensure that both Docker and Docker Compose are installed on your system.
 
@@ -306,7 +334,7 @@ Ensure that both Docker and Docker Compose are installed on your system.
   
   - For Linux: [Install Docker Compose on Linux](https://docs.docker.com/compose/install/linux/)
 
-## Clone the Repository
+### Clone the Repository
 
 Begin by cloning the repository containing the necessary configuration files:
 
@@ -315,7 +343,7 @@ git clone https://github.com/BlackFortGroup/bxn-ansible
 cd bxn-ansible/docker
 ```
 
-## Start the Node
+### Start the Node
 
 - **For Mainnet**:
 
@@ -331,7 +359,7 @@ The process for starting a node on the testnet is analogous to the mainnet.
 HOSTNAME=$HOSTNAME docker compose -f docker-compose-testnet.yml up -d
 ```
 
-## Docker Compose Configuration (`docker-compose-mainnet.yml`)
+### Docker Compose Configuration (`docker-compose-mainnet.yml`)
 
 The `docker-compose-mainnet.yml` file defines the configuration for running a Besu node in the Mainnet network. Below is the content of the file with explanations:
 
@@ -357,7 +385,7 @@ volumes:
   bxn-node-mainnet-data:
 ```
 
-### Explanation of Ports and Volumes
+#### Explanation of Ports and Volumes
 
 - **Ports**:
   
@@ -375,7 +403,7 @@ volumes:
   
   - `bxn-node-mainnet-data:/opt/besu/database`: Defines a named volume for storing blockchain data, ensuring data persistence across container restarts.
 
-## Configuration File (`config.toml`)
+### Configuration File (`config.toml`)
 
 The `config.toml` file specifies the node's runtime settings. Below are the key options with their purposes:
 
@@ -392,7 +420,7 @@ sync-mode="FAST"
 data-storage-format="BONSAI"
 ```
 
-### Explanation of Options
+#### Explanation of Options
 
 - `data-path`: Specifies the directory for storing blockchain data.
 
@@ -414,11 +442,11 @@ data-storage-format="BONSAI"
 
 - `data-storage-format`: Data storage format (options: 'FOREST', 'BONSAI')
 
-## Accessing the JSON-RPC API
+### Accessing the JSON-RPC API
 
 With `rpc-http-enabled` set to `true`, the JSON-RPC API is accessible at `http://localhost:8545`. This API allows for interaction with the Ethereum network through various methods.
 
-### Example Usage with `curl`
+#### Example Usage with `curl`
 
 - **Retrieve the Current Block Number**:
   
@@ -442,7 +470,7 @@ This command returns the number of connected peers in hexadecimal format.
 
 For a comprehensive list of available JSON-RPC methods and their usage, refer to the [Welcome | Besu documentation](https://besu.hyperledger.org/stable/public-networks/reference/api)
 
-## Verifying the Node
+### Verifying the Node
 
 To check if the node is running:
 
@@ -456,10 +484,46 @@ To view logs for debugging:
 docker compose -f docker-compose-mainnet.yml logs -f
 ```
 
-## Stopping the Node
+### Stopping the Node
 
 To stop the node, execute:
 
 ```bash
 docker compose -f docker-compose-mainnet.yml down
 ```
+
+## Adding a Validator to a Besu Network
+
+This guide explains how to add a validator to an existing Hyperledger Besu network.
+
+### Prerequisites
+
+1. A running Besu node deployed using one of these methods:
+   - [Running a Besu Node in an Existing Network using Ansible. Recommended](#running-a-besu-node-in-an-existing-network-using-ansible-recommended)
+   - [Running a Besu Node in an Existing Network using Docker Compose](#running-a-besu-node-in-an-existing-network-using-docker-compose)
+
+2. The node must be fully synchronized with the network
+
+### Get Node Address
+
+```bash
+docker exec <besu_container_name> besu public-key export-address
+```
+
+Example output:
+
+```
+0xfe3b557e8fb62b89f4916b721be55ceb828dbd73
+```
+
+### Submit Validator Request
+
+1. Send your node address to the network administrator for validator registration. Provide:
+   * The address obtained from the previous step
+   * Your node's enode URL (optional)
+   * Any additional information required by the network's governance
+
+2. The administrator will:
+   * Submit your address to the validator management contract
+   * Coordinate with existing validators for approval
+   * Notify you when the registration is complete
