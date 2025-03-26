@@ -1,20 +1,13 @@
 1. [General Information](#general-information)
-
 2. [Playbooks](#playbooks)
-
 3. [Inventory Files](#inventory-files)
-
 4. [Ansible Roles](#ansible-roles)
-
 5. [Role: `blackfort_besu`](#role-blackfort_besu)
-
 6. [Deployment Instructions](#deployment-instructions)
-
 7. [Variables](#variables)
-
 8. [Running a Besu Node in an Existing Network using Ansible. Recommended](#running-a-besu-node-in-an-existing-network-using-ansible-recommended)
-
 9. [Running a Besu Node in an Existing Network using Docker Compose](#running-a-besu-node-in-an-existing-network-using-docker-compose)
+10. [Adding a Validator to a Besu Network](#adding-a-validator-to-a-besu-network)
 
 # Besu Blockchain Deployment with Ansible
 
