@@ -1,19 +1,19 @@
-1. [General Information](#general-information)
-2. [Playbooks](#playbooks)
-3. [Inventory Files](#inventory-files)
-4. [Ansible Roles](#ansible-roles)
-5. [Role: `blackfort_besu`](#role-blackfort_besu)
-6. [Deployment Instructions](#deployment-instructions)
-7. [Variables](#variables)
-8. [Running a Besu Node in an Existing Network using Ansible. Recommended](#running-a-besu-node-in-an-existing-network-using-ansible-recommended)
-9. [Running a Besu Node in an Existing Network using Docker Compose](#running-a-besu-node-in-an-existing-network-using-docker-compose)
-10. [Adding a Validator to a Besu Network](#adding-a-validator-to-a-besu-network)
+1. [General Information](#1-general-information)
+2. [Playbooks](#2-playbooks)
+3. [Inventory Files](#3-inventory-files)
+4. [Ansible Roles](#4-ansible-roles)
+5. [Role: `blackfort_besu`](#5-role-blackfort_besu)
+6. [Deployment Instructions](#6-deployment-instructions)
+7. [Variables](#7-variables)
+8. [Running a Besu Node in an Existing Network using Ansible. Recommended](#8-running-a-besu-node-in-an-existing-network-using-ansible-recommended)
+9. [Running a Besu Node in an Existing Network using Docker Compose](#9-running-a-besu-node-in-an-existing-network-using-docker-compose)
+10. [Adding a Validator to a Besu Network](#10-adding-a-validator-to-a-besu-network)
 
 # Besu Blockchain Deployment with Ansible
 
 This repository contains Ansible playbooks for deploying and managing a Hyperledger Besu blockchain network. The setup supports both `testnet` and `mainnet` environments.
-
-## General information
+---
+## 1. General information
 
 Chain ID `testnet` **4888**
 
@@ -28,14 +28,14 @@ https://rpc.blackfort.network/mainnet/validator-1 - validator `mainnet`
 https://rpc.blackfort.network/testnet/rpc - node reader `testnet`
 
 https://rpc.blackfort.network/testnet/validator-1 - validator `testnet`
-
-## Playbooks
+---
+## 2. Playbooks
 
 - `mainnet-playbook.yaml` - Deploys a Besu mainnet node.
 
 - `testnet-playbook.yaml` - Deploys a Besu testnet node.
-
-## Inventory Files
+---
+## 3. Inventory Files
 
 Define the network structure in the following inventory files:
 
@@ -79,8 +79,8 @@ ansible_python_interpreter=/usr/bin/python3
 blackfort_besu_node="{{ blackfort_besu_network }}-{{ inventory_hostname }}"
 blackfort_besu_rpc_http_authentication_enabled="true"
 ```
-
-## Ansible Roles
+---
+## 4. Ansible Roles
 
 The playbooks utilize the following roles:
 
@@ -89,8 +89,8 @@ The playbooks utilize the following roles:
 - **buluma.fail2ban** - Installs Fail2Ban for security
 
 - **blackfort_besu** - Configures and deploys Besu
-
-## Role: `blackfort_besu`
+---
+## 5. Role: `blackfort_besu`
 
 ### Responsibilities
 
@@ -155,8 +155,8 @@ These keys are stored in:
 ```swift
 /opt/besu/keys/nodekey /opt/besu/keys/nodekey.pub
 ```
-
-## Deployment Instructions
+---
+## 6. Deployment Instructions
 
 ### Prerequisites
 
@@ -213,8 +213,8 @@ These variables can also be combined:
 ```bash
 ansible-playbook -i testnet-inventory.ini testnet-playbook.yaml -e "install_fail2ban=true install_docker=true blackfort_besu_blocks_import=true"
 ```
-
-## Variables
+---
+## 7. Variables
 
 | Variable                                                     | Description                                  | Default Value                                                                                        |
 | ------------------------------------------------------------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -260,8 +260,8 @@ ansible-playbook -i testnet-inventory.ini testnet-playbook.yaml -e "install_fail
 | `blackfort_besu_besu_opts`                                   | Additional Besu options.                     | `""`                                                                                                 |
 | `blackfort_besu_sync_mode`                                   | Synchronization mode.                        | `FAST`                                                                                               |
 | `blackfort_besu_data_storage_format`                         | Data storage format.                         | `BONSAI`                                                                                             |
-
-## Running a Besu Node in an Existing Network using Ansible. Recommended
+---
+## 8. Running a Besu Node in an Existing Network using Ansible. Recommended
 
 This guide explains how to deploy a Hyperledger Besu node into an existing network using Ansible.
 
@@ -310,8 +310,8 @@ To add a new node to the main network, run:
 ```bash
 ansible-playbook -i new-nodes-inventory.ini add-new-node-mainnet.yaml -e "install_docker=true"
 ```
-
-## Running a Besu Node in an Existing Network using Docker Compose
+---
+## 9. Running a Besu Node in an Existing Network using Docker Compose
 
 To successfully run a Hyperledger Besu node in an existing network using Docker Compose v2, follow the steps outlined below.
 
@@ -484,18 +484,37 @@ To stop the node, execute:
 ```bash
 docker compose -f docker-compose-mainnet.yml down
 ```
-
-## Adding a Validator to a Besu Network
+---
+## 10. Adding a Validator to a Besu Network
 
 This guide explains how to add a validator to an existing Hyperledger Besu network.
 
 ### Prerequisites
 
 1. A running Besu node deployed using one of these methods:
-   - [Running a Besu Node in an Existing Network using Ansible. Recommended](#running-a-besu-node-in-an-existing-network-using-ansible-recommended)
-   - [Running a Besu Node in an Existing Network using Docker Compose](#running-a-besu-node-in-an-existing-network-using-docker-compose)
+   - [Running a Besu Node in an Existing Network using Ansible. Recommended](#8-running-a-besu-node-in-an-existing-network-using-ansible-recommended)
+   - [Running a Besu Node in an Existing Network using Docker Compose](#9-running-a-besu-node-in-an-existing-network-using-docker-compose)
 
 2. The node must be fully synchronized with the network
+   - Check for Full Synchronization
+   
+     The node has completed synchronization when the log contains the message:
+     ```Node is in sync, enabling transaction handling```
+    ```bash
+    docker logs <besu_container_name> | grep "Node is in sync, enabling transaction handling" 
+    ```
+   - Monitor Synchronization Progress
+   
+     During synchronization, the node imports blocks and logs entries in the format:
+     ```Imported empty block #<block_number> ...```
+
+     _Example log entry:_
+
+     ```EthScheduler-Workers-0 | INFO  | PersistBlockTask | Imported empty block #529,913 / 0 tx / 0 om / 0 (0.0%) gas / (0x4e46...d3a) in 0.000s. Peers: 8```
+
+    ```bash
+    docker logs <besu_container_name> | grep "PersistBlockTask"  
+    ```
 
 ### Get Node Address
 
