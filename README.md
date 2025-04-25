@@ -12,7 +12,9 @@
 # Besu Blockchain Deployment with Ansible
 
 This repository contains Ansible playbooks for deploying and managing a Hyperledger Besu blockchain network. The setup supports both `testnet` and `mainnet` environments.
+
 ---
+
 ## 1. General information
 
 Chain ID `testnet` **4888**
@@ -29,12 +31,15 @@ https://rpc.blackfort.network/testnet/rpc - node reader `testnet`
 
 https://rpc.blackfort.network/testnet/validator-1 - validator `testnet`
 ---
+
 ## 2. Playbooks
 
 - `mainnet-playbook.yaml` - Deploys a Besu mainnet node.
 
 - `testnet-playbook.yaml` - Deploys a Besu testnet node.
+
 ---
+
 ## 3. Inventory Files
 
 Define the network structure in the following inventory files:
@@ -79,7 +84,9 @@ ansible_python_interpreter=/usr/bin/python3
 blackfort_besu_node="{{ blackfort_besu_network }}-{{ inventory_hostname }}"
 blackfort_besu_rpc_http_authentication_enabled="true"
 ```
+
 ---
+
 ## 4. Ansible Roles
 
 The playbooks utilize the following roles:
@@ -89,7 +96,9 @@ The playbooks utilize the following roles:
 - **buluma.fail2ban** - Installs Fail2Ban for security
 
 - **blackfort_besu** - Configures and deploys Besu
+
 ---
+
 ## 5. Role: `blackfort_besu`
 
 ### Responsibilities
@@ -155,7 +164,9 @@ These keys are stored in:
 ```swift
 /opt/besu/keys/nodekey /opt/besu/keys/nodekey.pub
 ```
+
 ---
+
 ## 6. Deployment Instructions
 
 ### Prerequisites
@@ -213,7 +224,9 @@ These variables can also be combined:
 ```bash
 ansible-playbook -i testnet-inventory.ini testnet-playbook.yaml -e "install_fail2ban=true install_docker=true blackfort_besu_blocks_import=true"
 ```
+
 ---
+
 ## 7. Variables
 
 | Variable                                                     | Description                                  | Default Value                                                                                        |
@@ -260,7 +273,9 @@ ansible-playbook -i testnet-inventory.ini testnet-playbook.yaml -e "install_fail
 | `blackfort_besu_besu_opts`                                   | Additional Besu options.                     | `""`                                                                                                 |
 | `blackfort_besu_sync_mode`                                   | Synchronization mode.                        | `FAST`                                                                                               |
 | `blackfort_besu_data_storage_format`                         | Data storage format.                         | `BONSAI`                                                                                             |
+
 ---
+
 ## 8. Running a Besu Node in an Existing Network using Ansible. Recommended
 
 This guide explains how to deploy a Hyperledger Besu node into an existing network using Ansible.
@@ -273,6 +288,8 @@ Before proceeding, ensure you have the following:
 2. SSH access to the target machine where Besu will run.
 3. Proper network connectivity between your control machine and the target node.
 4. Installation has been tested on Ubuntu 24.04.
+
+**Note:** If you do not have a virtual machine (VM) set up, you can create one by following the instructions in the [Setting Up an AWS EC2 Instance for Hyperledger Besu](#setting-up-an-aws-ec2-instance-for-hyperledger-besu) section.
 
 ### Clone the Repository
 
@@ -310,7 +327,9 @@ To add a new node to the main network, run:
 ```bash
 ansible-playbook -i new-nodes-inventory.ini add-new-node-mainnet.yaml -e "install_docker=true"
 ```
+
 ---
+
 ## 9. Running a Besu Node in an Existing Network using Docker Compose
 
 To successfully run a Hyperledger Besu node in an existing network using Docker Compose v2, follow the steps outlined below.
@@ -326,6 +345,8 @@ Ensure that both Docker and Docker Compose are installed on your system.
 - **Docker Compose**: Installation guide can be found here:
   
   - For Linux: [Install Docker Compose on Linux](https://docs.docker.com/compose/install/linux/)
+
+**Note:** If you do not have a virtual machine (VM) set up, you can create one by following the instructions in the [Setting Up an AWS EC2 Instance for Hyperledger Besu](#setting-up-an-aws-ec2-instance-for-hyperledger-besu) section.
 
 ### Clone the Repository
 
@@ -484,7 +505,9 @@ To stop the node, execute:
 ```bash
 docker compose -f docker-compose-mainnet.yml down
 ```
+
 ---
+
 ## 10. Adding a Validator to a Besu Network
 
 This guide explains how to add a validator to an existing Hyperledger Besu network.
@@ -492,29 +515,33 @@ This guide explains how to add a validator to an existing Hyperledger Besu netwo
 ### Prerequisites
 
 1. A running Besu node deployed using one of these methods:
+   
    - [Running a Besu Node in an Existing Network using Ansible. Recommended](#8-running-a-besu-node-in-an-existing-network-using-ansible-recommended)
    - [Running a Besu Node in an Existing Network using Docker Compose](#9-running-a-besu-node-in-an-existing-network-using-docker-compose)
 
 2. The node must be fully synchronized with the network
-   - Check for Full Synchronization
    
+   - Check for Full Synchronization
+     
      The node has completed synchronization when the log contains the message:
      ```Node is in sync, enabling transaction handling```
-    ```bash
-    docker logs <besu_container_name> | grep "Node is in sync, enabling transaction handling" 
-    ```
-   - Monitor Synchronization Progress
+     
+     ```bash
+     docker logs <besu_container_name> | grep "Node is in sync, enabling transaction handling" 
+     ```
    
+   - Monitor Synchronization Progress
+     
      During synchronization, the node imports blocks and logs entries in the format:
      ```Imported empty block #<block_number> ...```
-
+     
      _Example log entry:_
-
+     
      ```EthScheduler-Workers-0 | INFO  | PersistBlockTask | Imported empty block #529,913 / 0 tx / 0 om / 0 (0.0%) gas / (0x4e46...d3a) in 0.000s. Peers: 8```
-
-    ```bash
-    docker logs <besu_container_name> | grep "PersistBlockTask"  
-    ```
+     
+     ```bash
+     docker logs <besu_container_name> | grep "PersistBlockTask"  
+     ```
 
 ### Get Node Address
 
@@ -531,11 +558,137 @@ Example output:
 ### Submit Validator Request
 
 1. Send your node address to the network administrator for validator registration. Provide:
+   
    * The address obtained from the previous step
    * Your node's enode URL (optional)
    * Any additional information required by the network's governance
 
 2. The administrator will:
+   
    * Submit your address to the validator management contract
    * Coordinate with existing validators for approval
    * Notify you when the registration is complete
+
+---
+
+## Setting Up an AWS EC2 Instance for Hyperledger Besu
+
+### Registering for an AWS Account
+
+To use AWS services, you need to create an AWS account. Follow these steps:​
+
+1. **Visit the AWS homepage**: Go to ([AWS Console - Signup](https://signin.aws.amazon.com/signup?request_type=register))
+
+2. **Provide your account information**:
+   
+   - **Email address**: Enter a valid email address that will be associated with the account.
+   
+   - **Password**: Choose a strong password.
+   
+   - **AWS account name**: Provide a name for your account.​
+
+3. **Verify your email address**: AWS will send a verification code to your email. Enter this code to verify your email address.​
+
+4. **Enter contact information**:
+   
+   - **Account type**: Choose between **Personal** or **Business**.
+   
+   - **Full name**: Enter your full name.
+   
+   - **Phone number**: Provide a phone number for account verification.
+   
+   - **Address**: Enter your billing address.
+
+5. **Add a payment method**: Provide valid credit or debit card information. AWS may make a small charge to verify the payment method.​
+
+6. **Verify your phone number**: AWS will send a verification code via SMS or call. Enter this code to verify your phone number.​
+
+7. **Choose an AWS Support plan**: Select a support plan that suits your needs. The **Basic** plan is free and suitable for getting started.
+
+8. **Complete the sign-up process**: After completing the above steps, your account will be created. AWS will send a confirmation email once your account is ready to use.​
+
+For detailed instructions, refer to the [official AWS documentation on creating an account](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html).
+
+### Launching an EC2 Instance
+
+1. **Sign in to AWS**
+   
+   - Navigate to the [AWS Management Console](https://console.aws.amazon.com/).
+   
+   - Ensure you're in the desired region (e.g., **EU (Frankfurt) eu-central-1**).​
+
+2. **Create an SSH Key Pair**
+   
+   - In the EC2 Dashboard, select **Key Pairs** from the left-hand menu.
+   
+   - Click **Create key pair**.
+   
+   - Enter a name, such as `besu-key`.
+   
+   - For **Key pair type**, choose **RSA**.
+   
+   - For **Private key file format**, select **.pem** (suitable for Linux/macOS) or **.ppk** (for PuTTY on Windows).
+   
+   - Click **Create key pair**.
+   
+   - The private key file will download automatically. Store it securely; AWS does not retain a copy.
+
+For more details, refer to the [AWS documentation on creating key pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html).
+
+3. **Launch an EC2 Instance**
+   
+   - In the EC2 Dashboard, click **Launch Instance**.
+   
+   - Under **Name and tags**, assign a name like `besu-node`.
+   
+   - Under **Application and OS Images (Amazon Machine Image)**, select **Ubuntu Server 24.04 LTS (HVM), SSD Volume Type**.
+   
+   - Under **Instance type**, choose **c5.large**.
+   
+   - Under **Key pair (login)**, select the key pair you created earlier (`besu-key`).
+   
+   - **Configure storage**: 30 GiB is enough, increase if needed.
+   
+   - Under **Network settings**, configure or create a security group:
+     
+     - Allow **SSH (port 22)** from your IP.
+     
+     - Allow **TCP port 8545** for JSON-RPC (if needed).
+     
+     - Allow **TCP/UDP port 30303** for P2P communication.
+   
+   - Under **Configure storage**, adjust the root volume size if necessary.
+   
+   - Review all settings and click **Launch instance**.
+
+4. **Connect to Your EC2 Instance**
+   
+   - Once the instance is running, select it from the **Instances** list.
+   
+   - Click **Connect**.
+   
+   - Choose **SSH client** and follow the provided instructions.
+   
+   - From your terminal:
+     
+     ```bash
+     chmod 400 /path/to/besu-key.pem   ssh -i /path/to/besu-key.pem ubuntu@<EC2_PUBLIC_IP>
+     ```
+
+Replace `<EC2_PUBLIC_IP>` with your instance's public IP address.​
+
+5. **Prepare the Instance for Ansible**
+   
+   - Update the package list and install Python 3:​
+     
+     ```bash
+     sudo apt update && sudo apt upgrade -y   sudo apt install -y python3
+     ```
+   
+   - Exit the instance:
+     
+     ```bash
+     exit
+     ```
+     
+     Your EC2 instance is now ready for deploying Hyperledger Besu using Ansible.
