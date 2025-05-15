@@ -545,8 +545,16 @@ This guide explains how to add a validator to an existing Hyperledger Besu netwo
 
 ### Get Node Address
 
+If Ansible is used:
+
 ```bash
-docker exec <besu_container_name> besu public-key export-address
+docker exec <besu_container_name> besu public-key export-address --node-private-key-file=/keys/nodekey
+```
+
+If Docker Compose is used:
+
+```bash
+docker exec <besu_container_name> besu public-key export-address --node-private-key-file=/opt/besu/database/key
 ```
 
 Example output:
@@ -691,4 +699,4 @@ Replace `<EC2_PUBLIC_IP>` with your instance's public IP address.​
      exit
      ```
      
-     Your EC2 instance is now ready for deploying Hyperledger Besu using Ansible.
+Your EC2 instance is now ready for deploying Hyperledger Besu using Ansible.
