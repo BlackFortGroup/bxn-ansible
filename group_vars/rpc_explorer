@@ -1,5 +1,5 @@
 ---
-blackfort_besu_rpc_http_api: ["DEBUG", "ETH", "WEB3", "IBFT", "NET", "TRACE", "EEA", "PRIV", "QBFT", "PERM", "TXPOOL"]
+blackfort_besu_rpc_http_api: ["DEBUG", "ETH", "WEB3", "IBFT", "NET", "TRACE", "QBFT", "PERM", "TXPOOL"]
 blackfort_besu_rpc_http_authentication_enabled: "false"
 blackfort_besu_besu_opts: "BESU_OPTS=-Xms16g -Xmx24g"
 #blackfort_besu_log_level: "ERROR"
