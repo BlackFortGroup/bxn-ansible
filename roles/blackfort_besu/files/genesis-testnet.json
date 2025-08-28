@@ -25,6 +25,12 @@
     "londonBlock": 0,
     "contractSizeLimit": 65535,
     "zeroBaseFee": true,
+    "arrowGlacierBlock": 2131894,
+    "grayGlacierBlock": 2131894,
+    "parisBlock": 2131894,
+    "shanghaiBlock": 2131894,
+    "cancunBlock": 2131894,
+    "pragueBlock":2131894,
     "qbft": {
       "blockperiodseconds": 2,
       "epochlength": 30000,
